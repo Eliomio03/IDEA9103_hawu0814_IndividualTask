@@ -233,11 +233,40 @@ class Mondrian {
 
   // red/blue segments：Move along the yellow line
   drawAnimatedSegments() {
+    const isPlaying = soundFile && soundFile.isPlaying();
+
     for (const g of this.segmentGroups) {
+      const maxSteps = (g.dir === "h") ? GRID_COLS : GRID_ROWS;
+      let offset = 0;
+
+      if (isPlaying) {
+        let speed;
+        if (g.dir === "h") {
+          // horizontal line: the speed is determined by the treble and audio level.
+          speed = 0.02 + 0.25 * (0.5 * treble + 0.5 * audioLevel);
+        } else {
+          // Vertical lines: speed is determined by bass + audio level.
+          speed = 0.02 + 0.25 * (0.6 * bass + 0.4 * audioLevel);
+        }
+        g.phase += speed;
+        offset = floor(g.phase) % maxSteps;
+      } else {
+        offset = 0;
+      }
+
       for (const [dx, dy, c] of g.points) {
-        const gx = g.baseX + dx;
-        const gy = g.baseY + dy;
-        fill(c);
+        let gx = g.baseX + dx;
+        let gy = g.baseY + dy;
+
+        if (g.dir === "h") {
+          gx = (gx + offset) % GRID_COLS;
+        } else {
+          gy = (gy - offset);
+          while (gy < 0) gy += GRID_ROWS;
+          gy = gy % GRID_ROWS;
+        }
+
+        fill(c); 
         rect(gx * UNIT, gy * UNIT, UNIT, UNIT);
       }
     }
