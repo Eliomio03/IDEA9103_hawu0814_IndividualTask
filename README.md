@@ -86,7 +86,9 @@ The texture effects in the group's code are quite complex. Adding animation effe
 ## Tools used outside the course
 
 - **shadowBlur** learned from: https://p5js.org/reference/p5/drawingContext/
+  
 Mondrian's original style is very flat, so I hope to make these color blocks look more vibrant without destroying the geometric language. Music-responsive neon lights add a modern "digital visualization" beauty without losing the sense of grid. The light intensity changes smoothly with the amplitude of the audio, making the picture vibrant and dynamic.
+
 ShadowBlur works by adding a soft halo around any shape drawn on the HTML5 canvas. Using p5.js, we can access the underlying drawingContext, which provides underlying canvas attributes such as shadowBlur and shadowColor. After setting these values, any shape drawn later will automatically add a fuzzy color halo to its edge.
 
 ---
